@@ -1,8 +1,14 @@
 const express = require('express')
 const fs = require('fs')
 const hbs = require('hbs')
-
 const app = express()
+
+// Heroku port requirement
+const port = process.env.PORT || 3000
+
+// Heroku requires 'package.json' to have a start script:
+// scripts: "start": "node server.js"
+// afterwards, the app can be started from the terminal with 'npm start' instead of 'node server.js'
 
 hbs.registerPartials(__dirname + '/views/partials')
 app.set('view engine', 'hbs')
@@ -20,9 +26,9 @@ app.use((req, res, next) => {
     next()
 })
 
-app.use((req, res, next) => {
-    res.render('maintenance')
-})
+// app.use((req, res, next) => {
+//     res.render('maintenance')
+// })
 
 app.use(express.static(__dirname + '/public'))
 
@@ -52,6 +58,6 @@ app.get('/bad', (req, res) => {
     })
 })
 
-app.listen(3000, () => {
-    console.log('Server is up on port 3000')
+app.listen(port, () => {
+    console.log(`Server is up on port ${port}`)
 })
